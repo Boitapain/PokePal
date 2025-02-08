@@ -180,16 +180,17 @@
                         </textarea>
 
                         <span class="label">Select your Pokemons</span>
-                        <div
-                            class="grid grid-cols-3 gap-4 overflow-y-scroll max-h-[300px] m-3"
-                        >
-                            <div class="col-span-3">
-                                <input
+                        <input
                                     type="text"
                                     class="input input-bordered w-full"
                                     placeholder="Search for a Pokemon"
                                     bind:value={searchInput}
                                 />
+                        <div
+                            class="grid grid-cols-3 gap-4 overflow-y-scroll max-h-[300px] m-3"
+                        >
+                            <div class="col-span-3">
+                                
                             </div>
                             {#each pokemonList as pokemon, index}
                                 {#if searchInput === "" || pokemon.name.fr
