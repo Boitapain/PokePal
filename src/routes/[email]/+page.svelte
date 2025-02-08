@@ -82,7 +82,7 @@
     async function togglePokemon(id: number) {
         let pokemonIDs = [...profile.pokemon_ids];
 
-        if (pokemonIDs.length > 6 && !pokemonIDs.includes(id)) {
+        if (pokemonIDs.length >= 6 && !pokemonIDs.includes(id)) {
             alert("You can only have 6 pokemon on your page");
             return;
         }
@@ -111,15 +111,15 @@
                     {profile.username}'s page
                 {/if}
             </h1>
-            <p class="py-3 max-w-md mx-auto">{profile.description}</p>
-            <div class="carousel gap-3 w-full">
+            <p class="py-3 mx-auto">{profile.description}</p>
+            <div class="grid grid-cols-3 gap-3 w-full">
                 {#if pokemonData === undefined}
                     <p>Loading...</p>
                     <span class="loading loading-ring loading-lg"></span>
                 {:else}
                     {#each pokemonData as pokemon}
                         <div
-                            class="card carousel-item bg-base-300 m-4 glass shadow"
+                            class="card card-compact bg-base-300 m-4 glass shadow"
                         >
                             <div class="card-body">
                                 <div class="text-center">
