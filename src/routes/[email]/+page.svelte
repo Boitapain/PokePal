@@ -32,13 +32,11 @@
             .eq("email", session?.user?.email);
 
         if (profileData?.length === 0) {
-            const { data, error } = await supabase
-                .from("profiles")
-                .insert({
-                    ...profile,
-                    user_id: session?.user?.id,
-                    email: session?.user?.email,
-                });
+            const { data, error } = await supabase.from("profiles").insert({
+                ...profile,
+                user_id: session?.user?.id,
+                email: session?.user?.email,
+            });
         } else {
             const { data, error } = await supabase
                 .from("profiles")
@@ -106,14 +104,16 @@
             <h1 class="mb-5 text-5xl font-bold">
                 {#if !profile.username && session?.user?.email === email}
                     Your page
-                {:else if !profile.username && session?.user?.email !== email }
+                {:else if !profile.username && session?.user?.email !== email}
                     {email.split("@")[0]}'s page
                 {:else}
                     {profile.username}'s page
                 {/if}
             </h1>
             <p class="py-3 mx-auto">{profile.description}</p>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full h-[300px] sm:h-auto overflow-y-scroll">
+            <div
+                class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full h-[300px] sm:h-auto overflow-y-scroll"
+            >
                 {#if pokemonData === undefined}
                     <p>Loading...</p>
                     <span class="loading loading-ring loading-lg"></span>
@@ -145,88 +145,93 @@
                     {/each}
                 {/if}
             </div>
-            {#if session?.user?.email === email && session?.user?.email}
-                <button
-                    class="btn justify-self-center mt-4 self-center"
-                    aria-label="Add a Pokemon"
-                    onclick={() => (isModalOpen = true)}
-                >
-                    Edit Page
-                </button>
+            {#if session?.user?.email}
+                {#if session?.user?.email === email}
+                    <button
+                        class="btn justify-self-center mt-4 self-center"
+                        aria-label="Add a Pokemon"
+                        onclick={() => (isModalOpen = true)}
+                    >
+                        Edit Page
+                    </button>
 
-                <dialog
-                    class="modal modal-bottom sm:modal-middle"
-                    class:modal-open={isModalOpen}
-                >
-                    <div class="modal-box">
-                        <h3 class="text-lg font-bold">Edit your page</h3>
+                    <dialog
+                        class="modal modal-bottom sm:modal-middle"
+                        class:modal-open={isModalOpen}
+                    >
+                        <div class="modal-box">
+                            <h3 class="text-lg font-bold">Edit your page</h3>
 
-                        <p class="py-4">
-                            Here you can edit your page, like the description,
-                            or your favorite pokemons
-                        </p>
-                        <span class="label">Edit your username</span>
-                        <input
-                            type="text"
-                            class="input input-bordered w-full"
-                            bind:value={profile.username}
-                            placeholder="Username"
-                        />
-                        <span class="label">Edit the description</span>
-                        <textarea
-                            bind:value={profile.description}
-                            class="textarea textarea-bordered w-full"
-                            placeholder="Description"
-                        >
-                        </textarea>
+                            <p class="py-4">
+                                Here you can edit your page, like the
+                                description, or your favorite pokemons
+                            </p>
+                            <span class="label">Edit your username</span>
+                            <input
+                                type="text"
+                                class="input input-bordered w-full"
+                                bind:value={profile.username}
+                                placeholder="Username"
+                            />
+                            <span class="label">Edit the description</span>
+                            <textarea
+                                bind:value={profile.description}
+                                class="textarea textarea-bordered w-full"
+                                placeholder="Description"
+                            >
+                            </textarea>
 
-                        <span class="label">Select your Pokemons</span>
-                        <input
-                                    type="text"
-                                    class="input input-bordered w-full"
-                                    placeholder="Search for a Pokemon"
-                                    bind:value={searchInput}
-                                />
-                        <div
-                            class="grid xs:grid-cols-3 gap-4 overflow-y-scroll max-h-[300px] m-3"
-                        >
-                            <div class="col-span-3">
-                                
-                            </div>
-                            {#each pokemonList as pokemon, index}
-                                {#if searchInput === "" || pokemon.name.fr
-                                        .toLowerCase()
-                                        .includes(searchInput.toLowerCase())}
-                                    {#if index != 0}
-                                        <button
-                                            class={"btn btn-neutral " +
-                                                (profile.pokemon_ids.includes(
-                                                    index,
-                                                )
-                                                    ? "border-2 border-secondary"
-                                                    : "")}
-                                            onclick={() => togglePokemon(index)}
-                                        >
-                                            {pokemon.name.fr}
-                                        </button>
+                            <span class="label">Select your Pokemons</span>
+                            <input
+                                type="text"
+                                class="input input-bordered w-full"
+                                placeholder="Search for a Pokemon"
+                                bind:value={searchInput}
+                            />
+                            <div
+                                class="grid xs:grid-cols-3 gap-4 overflow-y-scroll max-h-[300px] m-3"
+                            >
+                                <div class="col-span-3"></div>
+                                {#each pokemonList as pokemon, index}
+                                    {#if searchInput === "" || pokemon.name.fr
+                                            .toLowerCase()
+                                            .includes(searchInput.toLowerCase())}
+                                        {#if index != 0}
+                                            <button
+                                                class={"btn btn-neutral " +
+                                                    (profile.pokemon_ids.includes(
+                                                        index,
+                                                    )
+                                                        ? "border-2 border-secondary"
+                                                        : "")}
+                                                onclick={() =>
+                                                    togglePokemon(index)}
+                                            >
+                                                {pokemon.name.fr}
+                                            </button>
+                                        {/if}
                                     {/if}
-                                {/if}
-                            {/each}
-                        </div>
+                                {/each}
+                            </div>
 
-                        <button
-                            class="btn mx-4 btn-secondary"
-                            onclick={() => savePageEdit()}>Save Edits</button
-                        >
-                        <button
-                            class="btn"
-                            onclick={() => (isModalOpen = false)}>Cancel</button
-                        >
-                    </div>
-                </dialog>
-            {:else if session?.user?.email !== email && session?.user?.email} 
-                <button class="btn justify-self-center mt-4 self-center"
-                aria-label="Add a Pokemon">Add to favorite</button>
+                            <button
+                                class="btn mx-4 btn-secondary"
+                                onclick={() => savePageEdit()}
+                                >Save Edits</button
+                            >
+                            <button
+                                class="btn"
+                                onclick={() => (isModalOpen = false)}
+                                >Cancel</button
+                            >
+                        </div>
+                    </dialog>
+                {:else}
+                    <button
+                        class="btn justify-self-center mt-4 self-center"
+                        aria-label="Add a Pokemon">Add to favorite</button
+                    >
+                {/if}
             {/if}
         </div>
     </div>
