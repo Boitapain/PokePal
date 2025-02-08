@@ -229,7 +229,8 @@
                 {:else}
                     <button
                         class="btn justify-self-center mt-4 self-center"
-                        aria-label="Add a Pokemon">Add to favorite</button
+                        aria-label="Add a Pokemon"
+                        onclick={() => saveProfile()}>Add to favorite</button
                     >
                 {/if}
             {/if}
