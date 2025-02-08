@@ -11,6 +11,7 @@
         description: "Feel free to talk about you or your favorite Pokemon!",
         pokemon_ids: [1, 2, 3],
         username: "",
+        fav_page: [],
     });
 
     let pokemonList: any = $state([]);
@@ -51,7 +52,7 @@
             // update profile data
             const { data: profileData, error: profileError } = await supabase
                 .from("profiles")
-                .select("description, pokemon_ids, username")
+                .select("description, pokemon_ids, username, fav_page")
                 .eq("email", email);
             if (profileData?.length == 0 && email == session?.user?.email) {
                 await saveProfile();
@@ -144,7 +145,7 @@
                     {/each}
                 {/if}
             </div>
-            {#if session?.user?.email === email}
+            {#if session?.user?.email === email && session?.user?.email}
                 <button
                     class="btn justify-self-center mt-4 self-center"
                     aria-label="Add a Pokemon"
@@ -223,6 +224,9 @@
                         >
                     </div>
                 </dialog>
+            {:else if session?.user?.email !== email && session?.user?.email} 
+                <button class="btn justify-self-center mt-4 self-center"
+                aria-label="Add a Pokemon">Add to favorite</button>
             {/if}
         </div>
     </div>
