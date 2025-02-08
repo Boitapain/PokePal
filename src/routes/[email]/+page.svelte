@@ -112,7 +112,7 @@
                 {/if}
             </h1>
             <p class="py-3 mx-auto">{profile.description}</p>
-            <div class="grid grid-cols-3 gap-3 w-full">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full h-[300px] sm:h-auto overflow-y-scroll">
                 {#if pokemonData === undefined}
                     <p>Loading...</p>
                     <span class="loading loading-ring loading-lg"></span>
@@ -187,7 +187,7 @@
                                     bind:value={searchInput}
                                 />
                         <div
-                            class="grid grid-cols-3 gap-4 overflow-y-scroll max-h-[300px] m-3"
+                            class="grid xs:grid-cols-3 gap-4 overflow-y-scroll max-h-[300px] m-3"
                         >
                             <div class="col-span-3">
                                 
