@@ -9,4 +9,4 @@ This project is built using the following technologies:
 - **Svelte**: A modern JavaScript framework for building user interfaces.
 - **Supabase**: An open-source Firebase alternative that provides backend services such as authentication and database management.
 
-You can visit the website on **poke-pal.vercel.app**
+You can visit the website on [poke-pal.vercel.app](https://poke-pal.vercel.app)
