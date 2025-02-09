@@ -34,6 +34,8 @@
 				}
 			},
 		);
+
+		fetchData();
 		return () => authListener?.subscription.unsubscribe();
 	});
 
