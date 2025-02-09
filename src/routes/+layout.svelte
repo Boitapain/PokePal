@@ -6,23 +6,8 @@
 	let { data, children } = $props();
 	let { supabase, session } = $derived(data);
 
-	let profile: any = $state({
-		fav_page: [],
-	});
-
 	// Listen to authentication state changes
 	$effect(() => {
-		async function fetchData() {
-			const { data: profileData, error: profileError } = await supabase
-				.from("profiles")
-				.select("fav_page")
-				.eq("email", session?.user?.email);
-
-			if (profileData && profileData.length > 0) {
-				profile.fav_page = profileData[0].fav_page;
-			}
-		}
-
 		const { data: authListener } = supabase.auth.onAuthStateChange(
 			async (event, session) => {
 				if (event === "SIGNED_IN") {
@@ -34,18 +19,15 @@
 				}
 			},
 		);
-
-		fetchData();
 		return () => authListener?.subscription.unsubscribe();
 	});
-
 	let pageTheme = theme;
 </script>
 
 <!-- Navbar -->
 
 <div
-	class="fixed top-0 left-0 right-0 navbar max-w-3xl mx-auto bg-base-100 justify-between"
+	class="navbar max-w-3xl mx-auto bg-base-100 justify-between"
 >
 	<div class="navbar">
 		<a href="/" class="btn btn-secondary shadow-md text-xl">PokePal</a>
@@ -56,20 +38,6 @@
 						>My page</a
 					>
 				</li>
-				{#if profile.fav_page.length > 0}
-					<li>
-						<details>
-							<summary>Save Pages</summary>
-							<ul class="bg-base-100 rounded-t-none p-2">
-								{#each profile.fav_page as fav_page}
-									<li>
-										<a href="/{fav_page}" class="btn btn-ghost">{fav_page}</a>
-									</li>
-								{/each}
-							</ul>
-						</details>
-					</li>
-				{/if}
 			</ul>
 		{/if}
 	</div>
