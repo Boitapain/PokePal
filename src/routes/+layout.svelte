@@ -1,11 +1,18 @@
 <script lang="ts">
 	import { goto, invalidateAll } from "$app/navigation";
 	import "../app.css";
+	import { page } from "$app/state";
 	import { theme, switchTheme } from "../stores/theme";
 
+    let email = $derived(page.params.email);
 	let { data, children } = $props();
 	let { supabase, session } = $derived(data);
 
+	function addToClipboard() {
+            navigator.clipboard.writeText(window.location.href)
+                .then(() => alert("URL copied to clipboard!"))
+                .catch(err => console.error("Error copying URL:", err));
+        }
 	// Listen to authentication state changes
 	$effect(() => {
 		const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -38,6 +45,11 @@
 						>My page</a
 					>
 				</li>
+				{#if session.user.email !== email}
+					<li>
+						<button onclick={addToClipboard} class="btn btn-ghost">Share</button>
+					</li>
+				{/if}
 			</ul>
 		{/if}
 	</div>
