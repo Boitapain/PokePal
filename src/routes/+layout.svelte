@@ -4,15 +4,16 @@
 	import { page } from "$app/state";
 	import { theme, switchTheme } from "../stores/theme";
 
-    let email = $derived(page.params.email);
+	let email = $derived(page.params.email);
 	let { data, children } = $props();
 	let { supabase, session } = $derived(data);
 
 	function addToClipboard() {
-            navigator.clipboard.writeText(window.location.href)
-                .then(() => alert("URL copied to clipboard!"))
-                .catch(err => console.error("Error copying URL:", err));
-        }
+		navigator.clipboard
+			.writeText(window.location.href)
+			.then(() => alert("URL copied to clipboard!"))
+			.catch((err) => console.error("Error copying URL:", err));
+	}
 	// Listen to authentication state changes
 	$effect(() => {
 		const { data: authListener } = supabase.auth.onAuthStateChange(
@@ -33,23 +34,21 @@
 
 <!-- Navbar -->
 
-<div
-	class="navbar max-w-3xl mx-auto bg-base-100 justify-between"
->
+<div class="navbar max-w-3xl mx-auto bg-base-100 justify-between">
 	<div class="navbar">
 		<a href="/" class="btn btn-secondary shadow-md text-xl">PokePal</a>
 		{#if session !== null}
-			<ul class="menu menu-horizontal ">
+			<ul class="menu menu-horizontal">
 				<li>
 					<a href="/{session.user.email}" class="btn btn-ghost"
 						>My page</a
 					>
 				</li>
-				{#if session.user.email !== email}
-					<li>
-						<button onclick={addToClipboard} class="btn btn-ghost">Share</button>
-					</li>
-				{/if}
+				<li>
+					<button onclick={addToClipboard} class="btn btn-ghost"
+						>Share</button
+					>
+				</li>
 			</ul>
 		{/if}
 	</div>

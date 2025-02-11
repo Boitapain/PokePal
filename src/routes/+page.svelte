@@ -5,7 +5,7 @@
                 Welcome to PokePal
             </h1>
             <p class="mb-5">
-                Create your own page with your pokemon collection
+                Create your own page with your pokemon collection and share it with your friends!
             </p>
             <a href="/Login" class="btn btn-secondary">Create an account</a>
         </div> 
